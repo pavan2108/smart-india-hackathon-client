@@ -44,7 +44,8 @@ function StudentRegistration() {
     React.useEffect(() => {
         document.title = "Student Registration"
         setLoading(true)
-        axios.get('https://smart-india-hackathon-server.vercel.app/api/fetchalluniversity').then(res => {
+        axios.get('https://smart-india-hackathon-server.vercel.app/api/fetchalluniversity'
+        ).then(res => {
             setUniversityList(res.data.data);
         }).catch(err => {
             setError(true)
@@ -120,6 +121,10 @@ function StudentRegistration() {
 
     const isAadharValid = async() => {
         const aadharData = await axios.post('https://smart-india-hackathon-server.vercel.app/api/aadharnumbervalidation', {
+            headers : {
+                'Content-Type': 'application/json',
+                "access-control-allow-origin": "*"
+            },
             aadharNumber: aadharNumber
         })
         if (aadharData.data.code === 'success') {
@@ -134,7 +139,11 @@ function StudentRegistration() {
     }
 
     const isNotDuplicateEntry = async() => {
-        const studentEntry = await axios.post('http://localhost:3500/api/studentexists', {
+        const studentEntry = await axios.post('https://smart-india-hackathon-server.vercel.app/api/studentexists', {
+            headers : {
+                'Content-Type': 'application/json',
+                "access-control-allow-origin": "*"
+            },
             aadharNumber: aadharNumber
         })
         if(studentEntry.data.code==="success")
@@ -166,7 +175,11 @@ function StudentRegistration() {
             {
                 if(isNotDuplicateEntry())
                 {
-                    const studentRegister = await axios.post("http://localhost:3500/api/addstudent", {
+                    const studentRegister = await axios.post("https://smart-india-hackathon-server.vercel.app/api/addstudent", {
+                        headers : {
+                'Content-Type': 'application/json',
+                "access-control-allow-origin": "*"
+            },
                         uid: university,
                         studentName : name,
                         aadharNumber : aadharNumber,

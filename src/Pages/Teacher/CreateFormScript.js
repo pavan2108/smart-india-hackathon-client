@@ -27,7 +27,7 @@ export default function CreateFormScript() {
     const [formSubmittedSuccessfully, setFormSubmittedSuccessfully] = React.useState(false)
 
     const getClassData = async () => {
-        const response = await axios.get("http://localhost:3500/api/classdata")
+        const response = await axios.get("https://smart-india-hackathon-server.vercel.app/api/classdata")
         setClasses(response.data)
     }
 
@@ -73,7 +73,11 @@ export default function CreateFormScript() {
             setSubmitLoading(false)
             return;
         }
-        const request = await axios.post("http://localhost:3500/api/classotpgeneration", {
+        const request = await axios.post("https://smart-india-hackathon-server.vercel.app/api/classotpgeneration", {
+            headers : {
+                'Content-Type': 'application/json',
+                "access-control-allow-origin": "*"
+            },
             classCode : formCode,
             classNumbers : selectedValues.map(item => item.id)
         })
