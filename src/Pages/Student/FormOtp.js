@@ -1,3 +1,4 @@
+/* global grecaptcha */
 import { Alert, Box, Button, Card, CardContent, FormControl, FormHelperText, InputAdornment, TextField, Typography } from '@mui/material'
 import React from 'react'
 import { LoadingButton } from '@mui/lab';
@@ -5,6 +6,10 @@ import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import PasswordIcon from '@mui/icons-material/Password';
 import CodeIcon from '@mui/icons-material/Code';
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { auth } from '../../firebase';
+
+import axios from 'axios';
 
 function FormOtp() {
     const [helperText, setHelperText] = React.useState('')
@@ -27,13 +32,33 @@ function FormOtp() {
     const [submitLoading, setSubmitLoading] = React.useState(false)
 
 
+
+    const captchaVerifier = () => {
+        
+        try {
+            window.recaptchaVerifier = new RecaptchaVerifier('captcha-student-login', 
+            {
+                size: 'invisible',
+            },
+            auth);
+        }
+        catch (e) {
+            console.log(e);
+            window.recaptchaVerifier.render().then(function(widgetId) {
+                grecaptcha.reset(widgetId);
+            });
+        }
+        
+    }
+
+
     const handleAadharNumber = (e) => {
         setAadharNumber(e.target.value)
         if(e.target.value.length === 12) {
             setAadharNumberError(false)
             setAadharNumberHelperText('')
         }
-        if (e.target.value.length < 1) {
+        else if (e.target.value.length < 1) {
             setAadharNumberError(false)
         }
         else if (e.target.value.length > 0 && e.target.value.length === 12 && !isNaN(e.target.value)) {
@@ -75,10 +100,81 @@ function FormOtp() {
         }
     }
 
+    const getPhoneNumber = async() => {
+        const response = await axios.post('http://localhost:3500/api/aadharnumber', {
+            aadharNumber: aadharNumber
+        })
+        if(response.data.code === "error")
+        {
+            setAadharNumberError(true)
+            setAadharNumberHelperText(response.data.message)
+            return false
+            
+        }
+        else
+        {
+            setAadharNumberError(false)
+            setAadharNumberHelperText('')
+            console.log(response.data.phoneNumber)
+            return true
+        }
+    }
+
+    const handleOtpRequest = async(event) => {
+        event.preventDefault();
+        // await getPhoneNumber();
+        const response = await axios.post('http://localhost:3500/api/aadharnumber', {
+            aadharNumber: aadharNumber
+        })
+        if(response.data.code === "error")
+        {
+            setAadharNumberError(true)
+            setAadharNumberHelperText(response.data.message)
+            
+        }
+        else
+        {
+            setAadharNumberError(false)
+            setAadharNumberHelperText('')
+            captchaVerifier();     
+            await signInWithPhoneNumber(auth, response.data.phoneNumber, window.recaptchaVerifier)
+                .then(confirmationResult => {
+                    console.log(confirmationResult);
+                    window.confirmationResult = confirmationResult;
+                })
+                .catch(error => {
+                    console.log(error);
+                    window.recaptchaVerifier.render().then(function(widgetId) {
+                        grecaptcha.reset(widgetId);
+                    });
+                })
+            console.log(response.data.phoneNumber)
+        }
+        
+        
+    }
+        const handleOtpVerifier = (event) => {
+        event.preventDefault();
+        console.log("Hi")
+        const code = otp;
+        const confirmationResult = window.confirmationResult;
+        if (!confirmationResult) {
+            return;
+        }
+        confirmationResult.confirm(code).then((result) => {
+        console.log(result);
+        
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+                
+
+
     const handleSubmit = async(e) => {
         e.preventDefault()
         setSubmitLoading(true)
-        
+        handleOtpVerifier(e)
         setSubmitLoading(false)
     }
 
@@ -136,7 +232,7 @@ function FormOtp() {
                                             />
                                             <FormHelperText id="student-token-request-aadhar-helper">We'll never share your Aadhar Details.</FormHelperText>
                             </FormControl>
-                            <Button type="button" variant="contained" color="primary" disabled={submitLoading} size="large" sx={{marginBottom : "3%", marginRight : "3%"}}>
+                            <Button type="button" variant="contained" color="primary" disabled={submitLoading} size="large" sx={{marginBottom : "3%", marginRight : "3%"}} onClick={handleOtpRequest}>
                                 {submitLoading ? <LoadingButton /> : 'Request Otp'}
                             </Button>
                         </Box>
@@ -212,6 +308,9 @@ function FormOtp() {
                 </React.Fragment>
             </Card>
         </Box>
+        <div id="captcha-student-login">
+
+        </div>
     </div>
   )
 }
