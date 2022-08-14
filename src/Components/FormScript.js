@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react";
 import { CopyBlock, dracula } from "react-code-blocks";
 
-function FormScript({text}) {
-    if (text === undefined) {
-        text = "";
-    }
+function FormScript({ text }) {
+  if (text === undefined) {
+    text = "";
+  }
   return (
     <CopyBlock
       text={`function validatePassword() {
@@ -25,17 +25,17 @@ function FormScript({text}) {
 		.build();
 	item.setValidation(textValidation);
 }`}
-      language={'javascript'}
+      language={"javascript"}
       showLineNumbers={true}
       startingLineNumber={1}
       theme={dracula}
       wrapLines
       customStyle={{
-        height: '500px',
-        overflow: 'scroll',
+        height: "500px",
+        overflow: "scroll",
       }}
     />
-  )
+  );
 }
 
-export default FormScript
+export default FormScript;
