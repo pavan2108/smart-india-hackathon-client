@@ -104,7 +104,7 @@ function FormOtp() {
         const response = await axios.post('https://smart-india-hackathon-server.vercel.app/api/aadharnumber', {
             headers : {
                 'Content-Type': 'application/json',
-                "access-control-allow-origin": "http://smart-india-hackathon-server.vercel.app/"
+                "access-control-allow-origin": "*"
             },
             aadharNumber: aadharNumber
         })
@@ -130,7 +130,7 @@ function FormOtp() {
         const response = await axios.post('https://smart-india-hackathon-server.vercel.app/api/aadharnumber', {
              headers : {
                 'Content-Type': 'application/json',
-                "access-control-allow-origin": "http://smart-india-hackathon-server.vercel.app/"
+                "access-control-allow-origin": "*"
             },
             aadharNumber: aadharNumber
         })
