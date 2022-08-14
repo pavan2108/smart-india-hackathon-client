@@ -44,7 +44,7 @@ function StudentRegistration() {
     React.useEffect(() => {
         document.title = "Student Registration"
         setLoading(true)
-        axios.get('http://localhost:3500/api/fetchalluniversity').then(res => {
+        axios.get('https://smart-india-hackathon-server.vercel.app/api/fetchalluniversity').then(res => {
             setUniversityList(res.data.data);
         }).catch(err => {
             setError(true)
@@ -119,7 +119,7 @@ function StudentRegistration() {
 
 
     const isAadharValid = async() => {
-        const aadharData = await axios.post('http://localhost:3500/api/aadharnumbervalidation', {
+        const aadharData = await axios.post('https://smart-india-hackathon-server.vercel.app/api/aadharnumbervalidation', {
             aadharNumber: aadharNumber
         })
         if (aadharData.data.code === 'success') {
