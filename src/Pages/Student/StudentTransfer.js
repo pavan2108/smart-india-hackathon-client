@@ -13,7 +13,7 @@ function StudentTransfer() {
     const [warning, setWarning] = React.useState(false)
     React.useEffect(() => {
         document.title = 'Student Transfer'
-        axios.get('http://localhost:3500/api/fetchalluniversity').then(res => {
+        axios.get('http://smart-india-hackathon-server.vercel.app/api/fetchalluniversity').then(res => {
             setUniversityList(res.data.data);
         }).catch(err => {
             setError(true)
@@ -37,7 +37,7 @@ function StudentTransfer() {
 
     const handlePresentUniversity = async(aadharNumber) => {
         console.log(aadharNumber)
-        const studentEntry = await axios.post('http://localhost:3500/api/studentexists', {
+        const studentEntry = await axios.post('http://smart-india-hackathon-server.vercel.app/api/studentexists', {
             aadharNumber: aadharNumber
         })
         if(studentEntry.data.code==="success")
@@ -79,7 +79,7 @@ function StudentTransfer() {
             setHelperText("Seems you are already student in same institution")
             return;
         }
-        const studentTransfer = await axios.post("http://localhost:3500/api/transferstudent", {
+        const studentTransfer = await axios.post("http://smart-india-hackathon-server.vercel.app/api/transferstudent", {
             aadharNumber: aadharNumber,
             uid : university,
         })
