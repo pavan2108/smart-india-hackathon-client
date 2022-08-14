@@ -11,9 +11,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import LoadingButton from '@mui/lab/LoadingButton';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 function StudentRegistration() {
-
+    const navigate = useNavigate();
     const [universityList, setUniversityList] = React.useState([]);
+
     const [email, setEmail] = React.useState('')
     const [emailError, setEmailError] = React.useState(false)
     const [emailHelperText, setEmailHelperText] = React.useState('')
@@ -34,11 +36,13 @@ function StudentRegistration() {
 
     const [loading, setLoading] = React.useState(true)
     const [error, setError] = React.useState(false)
+    const [success, setSuccess] = React.useState(false)
     const [errorMessage, setErrorMessage] = React.useState('')
 
     const [submitLoading, setSubmitLoading] = React.useState(false)
 
     React.useEffect(() => {
+        document.title = "Student Registration"
         setLoading(true)
         axios.get('https://smart-india-hackathon-server.vercel.app/api/fetchalluniversity').then(res => {
             setUniversityList(res.data.data);
@@ -135,17 +139,22 @@ function StudentRegistration() {
         })
         if(studentEntry.data.code==="success")
         {
-            return;
+            return true;
         }
         else
         {
             setError(true)
+            setSuccess(false)
             setErrorMessage(`Seems you were active student of univeristy ${studentEntry.data.data.universityName}. Please apply transfer`)
+            setTimeout(() => {
+                        navigate("../transfercertificate")
+                    } , 4000)
+            return false;
         }
     }
     
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault()
         setSubmitLoading(true)
         if (emailError || aadharNumberError || phoneNumberError || nameError) {
@@ -153,14 +162,53 @@ function StudentRegistration() {
             setError(true)
             setErrorMessage('Please fill all the fields')
         } else {
-            isAadharValid()
-            isNotDuplicateEntry()
+            if(isAadharValid())
+            {
+                if(isNotDuplicateEntry())
+                {
+                    const studentRegister = await axios.post("http://localhost:3500/api/addstudent", {
+                        uid: university,
+                        studentName : name,
+                        aadharNumber : aadharNumber,
+                        studentPhoneNumber : phoneNumber,
+                        studentEmail : email
+                    })
+                    if(studentRegister.data.code==="success")
+                    {
+                        setSubmitLoading(false)
+                        setError(false)
+                        setSuccess(true)
+                        setErrorMessage(`Successfully added the student to University redirecting to home page`)
+                        resetForm()
+                        setTimeout(() => {
+                            navigate("../home")
+                        }, 4000)
+                    }
+                    else {
+                        setSubmitLoading(false)
+                        setError(true)
+                        setErrorMessage(studentRegister.data.message)
+                    }
+                }
+                else {
+                    console.log("This is a log message")
+                    setTimeout(() => {
+                        navigate("../transfercertificate")
+                    } , 4000)
+                }
+            }
         }
+        setTimeout(() => {
+            setError(false)
+            setSuccess(false)
+            setErrorMessage('')
+        } , 3000)
         resetForm()
         setSubmitLoading(false)
     }
   return (
     <div className='m-5'>
+        <p>{loading}</p>
         <Box 
         sx={{ minWidth: 275, flexGrow: 1 }} 
         display="flex"
@@ -171,6 +219,7 @@ function StudentRegistration() {
                 <React.Fragment>
                     <CardContent>
                         {error ? <Alert severity="error">{errorMessage}</Alert> : null}
+                        {success ? <Alert severity="success">{errorMessage}</Alert> : null}
                             <br/>
                             <br/>
                         <Typography className="text-center" variant='h4'>Student Registration</Typography>
