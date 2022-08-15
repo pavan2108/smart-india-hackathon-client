@@ -6,6 +6,7 @@ import FormOtp from "./Pages/Student/FormOtp";
 import StudentRegistration from "./Pages/Student/StudentRegistration";
 import StudentTransfer from "./Pages/Student/StudentTransfer";
 import CreateFormScript from "./Pages/Teacher/CreateFormScript";
+import CreateMeeting from "./Pages/Teacher/CreateMeeting";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/transfercertificate" element={<StudentTransfer />} />
         <Route path="/teacher/createform" element={<CreateFormScript />} />
         <Route path="/student/requestotp" element={<FormOtp />} />
+        <Route path="/teacher/createmeeting" element={<CreateMeeting />} />
         <Route path="*" element={<Home />} />
       </Routes>
     </Router>
