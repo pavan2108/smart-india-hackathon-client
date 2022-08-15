@@ -84,7 +84,11 @@ function FormOtp() {
     e.preventDefault();
     setSubmitLoading(true);
     const response = await axios.post(
-      "https://smart-india-hackathon-server.vercel.app/api/generateauthstudent"
+      "https://smart-india-hackathon-server.vercel.app/api/generateauthstudent",
+      {
+        aadharNumber: aadharNumber,
+        classCode: classCode,
+      }
     );
     setClassToken(response.data.data);
     setFormSubmittedSuccessfully(true);
