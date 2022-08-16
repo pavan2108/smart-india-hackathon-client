@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
+import Error from "./Pages/Error";
 import Home from "./Pages/Home";
 import FormOtp from "./Pages/Student/FormOtp";
 
@@ -15,12 +16,18 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
+        {/* Student Routes --------------------------------*/}
         <Route path="/registerationform" element={<StudentRegistration />} />
         <Route path="/transfercertificate" element={<StudentTransfer />} />
-        <Route path="/teacher/createform" element={<CreateFormScript />} />
         <Route path="/student/requestotp" element={<FormOtp />} />
+
+        {/* Teacher Routes --------------------------------*/}
+        <Route path="/teacher/createform" element={<CreateFormScript />} />
         <Route path="/teacher/createmeeting" element={<CreateMeeting />} />
-        <Route path="*" element={<Home />} />
+
+        {/* Admin Routes --------------------------------*/}
+
+        <Route path="*" element={<Error />} />
       </Routes>
     </Router>
   );
