@@ -86,6 +86,10 @@ function FormOtp() {
     const response = await axios.post(
       "https://smart-india-hackathon-server.vercel.app/api/generateauthstudent",
       {
+        headers: {
+          "Content-Type": "application/json",
+          "access-control-allow-origin": "*",
+        },
         aadharNumber: aadharNumber,
         classCode: classCode,
       }
