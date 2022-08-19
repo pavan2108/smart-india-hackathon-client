@@ -16,22 +16,22 @@ import { Link } from "react-router-dom";
 
 const pages = [
   {
-    name: "Registration Form",
-    path: "registerationform",
+    name: "Dashboard",
+    path: "dashboard",
   },
   {
-    name: "Transfer Certificate",
-    path: "transfercertificate",
+    name: "Generate Form Script",
+    path: "createform",
   },
   {
-    name: "Generate Form Otp",
-    path: "student/requestotp",
+    name: "Create Meeting",
+    path: "createmeeting",
   },
 ];
 const settings = [
   {
     name: "Dashboard",
-    path: "dashboard",
+    path: "teacher/dashboard",
   },
   {
     name: "Logout",
@@ -39,7 +39,7 @@ const settings = [
   },
 ];
 
-const Navbar = () => {
+const TeacherNavbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -112,7 +112,10 @@ const Navbar = () => {
             >
               {pages.map((page, index) => (
                 <MenuItem key={index} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page.name}</Typography>
+                  <Link to={`../teacher/${page.path}`} key={index}>
+                    {page.name}
+                  </Link>
+                  {/* <Typography textAlign="center">{page.name}</Typography> */}
                 </MenuItem>
               ))}
             </Menu>
@@ -138,15 +141,17 @@ const Navbar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page, index) => (
-              <Link to={`/${page.path}`} key={index}>
-                <Button
-                  key={page.name}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page.name}
-                </Button>
-              </Link>
+              <>
+                <Link to={`../teacher/${page.path}`} key={index}>
+                  <Button
+                    key={page.name}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page.name}
+                  </Button>
+                </Link>
+              </>
             ))}
           </Box>
 
@@ -189,4 +194,4 @@ const Navbar = () => {
     </AppBar>
   );
 };
-export default Navbar;
+export default TeacherNavbar;

@@ -21,6 +21,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../../Components/Navbar";
 function StudentRegistration() {
   const navigate = useNavigate();
   const [universityList, setUniversityList] = React.useState([]);
@@ -246,190 +247,197 @@ function StudentRegistration() {
     setSubmitLoading(false);
   };
   return (
-    <div className="m-5">
-      <p>{loading}</p>
-      <Box
-        sx={{ minWidth: 275, flexGrow: 1 }}
-        display="flex"
-        flex-direction="column"
-        justifyContent="center"
-        minHeight="100%"
-      >
-        <Card variant="outlined" sx={{ minHeight: "100%", flexGrow: 1 }}>
-          <React.Fragment>
-            <CardContent>
-              {error ? <Alert severity="error">{errorMessage}</Alert> : null}
-              {success ? (
-                <Alert severity="success">{errorMessage}</Alert>
-              ) : null}
-              <br />
-              <br />
-              <Typography className="text-center" variant="h4">
-                Student Registration
-              </Typography>
-              <Typography
-                className="text-center"
-                variant="h5"
-                sx={{ marginY: 5 }}
+    <>
+      <Navbar />
+      <div className="m-5">
+        <p>{loading}</p>
+        <Box
+          sx={{ minWidth: 275, flexGrow: 1 }}
+          display="flex"
+          flex-direction="column"
+          justifyContent="center"
+          minHeight="100%"
+        >
+          <Card variant="outlined" sx={{ minHeight: "100%", flexGrow: 1 }}>
+            <React.Fragment>
+              <CardContent>
+                {error ? <Alert severity="error">{errorMessage}</Alert> : null}
+                {success ? (
+                  <Alert severity="success">{errorMessage}</Alert>
+                ) : null}
+                <br />
+                <br />
+                <Typography className="text-center" variant="h4">
+                  Student Registration
+                </Typography>
+                <Typography
+                  className="text-center"
+                  variant="h5"
+                  sx={{ marginY: 5 }}
+                >
+                  This is a form to register a student into the institution
+                </Typography>
+              </CardContent>
+              <Box
+                sx={{ margin: "5%" }}
+                component="form"
+                onSubmit={handleSubmit}
               >
-                This is a form to register a student into the institution
-              </Typography>
-            </CardContent>
-            <Box sx={{ margin: "5%" }} component="form" onSubmit={handleSubmit}>
-              <FormControl fullWidth variant="outlined">
-                <TextField
-                  id="student-register-email"
-                  label="Email"
-                  variant="outlined"
-                  aria-describedby="student-register-email-helper"
-                  required
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <EmailIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  placeholder="Enter your email"
-                  type={"email"}
-                  error={emailError}
-                  value={email}
-                  helperText={emailError ? emailHelperText : ""}
-                  onChange={handleEmail}
-                />
-                <FormHelperText id="student-register-email-helper">
-                  We'll never share your email Details.
-                </FormHelperText>
-              </FormControl>
-              <br />
-              <br />
-              <FormControl fullWidth variant="outlined">
-                <TextField
-                  id="student-register-name"
-                  label="Name"
-                  variant="outlined"
-                  aria-describedby="student-register-name-helper"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <PersonIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  required
-                  placeholder="Enter your Name"
-                  error={nameError}
-                  value={name}
-                  helperText={nameError ? nameHelperText : ""}
-                  onChange={handleName}
-                />
-                <FormHelperText id="student-register-name-helper">
-                  Please enter your full name.
-                </FormHelperText>
-              </FormControl>
-              <br />
-              <br />
-              <FormControl fullWidth variant="outlined">
-                <TextField
-                  id="student-register-aadhar"
-                  label="Aadhar Number"
-                  variant="outlined"
-                  required
-                  aria-describedby="student-register-email-helper"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <CreditCardIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  placeholder="Enter your aadhar number"
-                  error={aadharNumberError}
-                  value={aadharNumber}
-                  helperText={aadharNumberError ? aadharNumberHelperText : ""}
-                  onChange={handleAadharNumber}
-                />
-                <FormHelperText id="student-register-aadhar-helper">
-                  We'll never share your Aadhar Details.
-                </FormHelperText>
-              </FormControl>
-              <br />
-              <br />
-              <FormControl fullWidth variant="outlined">
-                <TextField
-                  id="student-register-phone"
-                  label="Phone Number"
-                  variant="outlined"
-                  required
-                  aria-describedby="student-register-phone-helper"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <PhoneIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  placeholder="Enter your phone number"
-                  error={phoneNumberError}
-                  value={phoneNumber}
-                  helperText={phoneNumberError ? phoneNumberHelperText : ""}
-                  onChange={handlePhoneNumber}
-                />
-                <FormHelperText id="student-register-phone-helper">
-                  Please add country code with your number for example
-                  919999999999.
-                </FormHelperText>
-              </FormControl>
-              <br />
-              <br />
-              <FormControl fullWidth variant="outlined">
-                <InputLabel id="student-register-university-label">
-                  University
-                </InputLabel>
-                <Select
-                  labelId="student-register-university-label"
-                  id="student-register-university"
-                  label="Age"
-                  value={university}
-                  onChange={(e) => setUniversity(e.target.value)}
-                  required
-                >
-                  {universityList.map((university, index) => {
-                    return (
-                      <MenuItem key={index} value={university.uid}>
-                        {university.uid} - {university.universityName}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-                <FormHelperText id="student-register-phone-helper">
-                  Please select a university
-                </FormHelperText>
-              </FormControl>
-              <br />
-              <br />
-              <Box textAlign="center">
-                <LoadingButton
-                  loading={submitLoading}
-                  loadingPosition="end"
-                  endIcon={<AppRegistrationIcon />}
-                  variant="outlined"
-                  type="submit"
-                  disabled={
-                    nameError ||
-                    aadharNumberError ||
-                    phoneNumberError ||
-                    nameError
-                  }
-                >
-                  Register
-                </LoadingButton>
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    id="student-register-email"
+                    label="Email"
+                    variant="outlined"
+                    aria-describedby="student-register-email-helper"
+                    required
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <EmailIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    placeholder="Enter your email"
+                    type={"email"}
+                    error={emailError}
+                    value={email}
+                    helperText={emailError ? emailHelperText : ""}
+                    onChange={handleEmail}
+                  />
+                  <FormHelperText id="student-register-email-helper">
+                    We'll never share your email Details.
+                  </FormHelperText>
+                </FormControl>
+                <br />
+                <br />
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    id="student-register-name"
+                    label="Name"
+                    variant="outlined"
+                    aria-describedby="student-register-name-helper"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <PersonIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    required
+                    placeholder="Enter your Name"
+                    error={nameError}
+                    value={name}
+                    helperText={nameError ? nameHelperText : ""}
+                    onChange={handleName}
+                  />
+                  <FormHelperText id="student-register-name-helper">
+                    Please enter your full name.
+                  </FormHelperText>
+                </FormControl>
+                <br />
+                <br />
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    id="student-register-aadhar"
+                    label="Aadhar Number"
+                    variant="outlined"
+                    required
+                    aria-describedby="student-register-email-helper"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <CreditCardIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    placeholder="Enter your aadhar number"
+                    error={aadharNumberError}
+                    value={aadharNumber}
+                    helperText={aadharNumberError ? aadharNumberHelperText : ""}
+                    onChange={handleAadharNumber}
+                  />
+                  <FormHelperText id="student-register-aadhar-helper">
+                    We'll never share your Aadhar Details.
+                  </FormHelperText>
+                </FormControl>
+                <br />
+                <br />
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    id="student-register-phone"
+                    label="Phone Number"
+                    variant="outlined"
+                    required
+                    aria-describedby="student-register-phone-helper"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <PhoneIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    placeholder="Enter your phone number"
+                    error={phoneNumberError}
+                    value={phoneNumber}
+                    helperText={phoneNumberError ? phoneNumberHelperText : ""}
+                    onChange={handlePhoneNumber}
+                  />
+                  <FormHelperText id="student-register-phone-helper">
+                    Please add country code with your number for example
+                    919999999999.
+                  </FormHelperText>
+                </FormControl>
+                <br />
+                <br />
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel id="student-register-university-label">
+                    University
+                  </InputLabel>
+                  <Select
+                    labelId="student-register-university-label"
+                    id="student-register-university"
+                    label="Age"
+                    value={university}
+                    onChange={(e) => setUniversity(e.target.value)}
+                    required
+                  >
+                    {universityList.map((university, index) => {
+                      return (
+                        <MenuItem key={index} value={university.uid}>
+                          {university.uid} - {university.universityName}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                  <FormHelperText id="student-register-phone-helper">
+                    Please select a university
+                  </FormHelperText>
+                </FormControl>
+                <br />
+                <br />
+                <Box textAlign="center">
+                  <LoadingButton
+                    loading={submitLoading}
+                    loadingPosition="end"
+                    endIcon={<AppRegistrationIcon />}
+                    variant="outlined"
+                    type="submit"
+                    disabled={
+                      nameError ||
+                      aadharNumberError ||
+                      phoneNumberError ||
+                      nameError
+                    }
+                  >
+                    Register
+                  </LoadingButton>
+                </Box>
               </Box>
-            </Box>
-          </React.Fragment>
-        </Card>
-      </Box>
-    </div>
+            </React.Fragment>
+          </Card>
+        </Box>
+      </div>
+    </>
   );
 }
 
