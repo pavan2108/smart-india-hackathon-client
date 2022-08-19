@@ -10,7 +10,7 @@ function TeacherDashboard() {
   const [data, setData] = React.useState([]);
   const getMeetingData = async () => {
     const data = await axios.get(
-      `http://localhost:3500/api/meetingdata/${teacherEmail}`
+      `https://smart-india-hackathon-server.vercel.app/api/meetingdata/${teacherEmail}`
     );
     setData(data.data.meetings);
   };

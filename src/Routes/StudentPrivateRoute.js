@@ -4,7 +4,7 @@ import { useAuth } from "../Contexts/AuthContext";
 function StudentPrivateRoute({ currentUser }) {
   const role = localStorage.getItem("role");
   const { contextLoading } = useAuth();
-  return currentUser && role === "student" && !contextLoading ? (
+  return role === "student" && !contextLoading ? (
     <Outlet />
   ) : (
     <Navigate to="/student/login" />

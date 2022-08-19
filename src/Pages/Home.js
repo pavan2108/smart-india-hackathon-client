@@ -68,6 +68,7 @@ function Home() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            marginY: "2%",
           }}
         >
           <Link to="/student/login">

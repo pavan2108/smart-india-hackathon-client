@@ -69,7 +69,7 @@ function CreateMeeting() {
     setLoading(true);
     const classNumbers = selectedValues.map((item) => item.id);
     const response = await axios.post(
-      "http://localhost:3500/api/createmeeting",
+      "https://smart-india-hackathon-server.vercel.app/api/createmeeting",
       {
         headers: {
           "Content-Type": "application/json",

@@ -24,11 +24,20 @@ const pages = [
     path: "transfercertificate",
   },
   {
-    name: "About",
-    path: "about",
+    name: "Generate Form Otp",
+    path: "student/requestotp",
   },
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = [
+  {
+    name: "Dashboard",
+    path: "dashboard",
+  },
+  {
+    name: "Logout",
+    path: "logout",
+  },
+];
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -163,9 +172,14 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map((setting, index) => (
+                <MenuItem
+                  key={`settings` + index}
+                  onClick={handleCloseUserMenu}
+                >
+                  <Link to={`../${setting.path}`} key={`setting` + index}>
+                    {setting.name}
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
