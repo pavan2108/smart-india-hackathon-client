@@ -17,6 +17,7 @@ import { Box } from "@mui/system";
 import axios from "axios";
 import { LoadingButton } from "@mui/lab";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import Navbar from "../../Components/Navbar";
 
 function StudentTransfer() {
   const [universityList, setUniversityList] = React.useState([]);
@@ -127,118 +128,129 @@ function StudentTransfer() {
   };
 
   return (
-    <div className="m-5">
-      <Box
-        sx={{ minWidth: 275, flexGrow: 1 }}
-        display="flex"
-        flex-direction="column"
-        justifyContent="center"
-        minHeight="100%"
-      >
-        <Card variant="outlined" sx={{ minHeight: "100%", flexGrow: 1 }}>
-          <React.Fragment>
-            <CardContent>
-              {error ? <Alert severity="error">{helperText}</Alert> : null}
-              {success ? <Alert severity="success">{helperText}</Alert> : null}
-              {warning ? <Alert severity="warning">{helperText}</Alert> : null}
-              <br />
-              <br />
-              <Typography className="text-center" variant="h4">
-                Student Transfer
-              </Typography>
-              <Typography
-                className="text-center"
-                variant="h5"
-                sx={{ marginY: 5 }}
+    <>
+      <Navbar />
+      <div className="m-5">
+        <Box
+          sx={{ minWidth: 275, flexGrow: 1 }}
+          display="flex"
+          flex-direction="column"
+          justifyContent="center"
+          minHeight="100%"
+        >
+          <Card variant="outlined" sx={{ minHeight: "100%", flexGrow: 1 }}>
+            <React.Fragment>
+              <CardContent>
+                {error ? <Alert severity="error">{helperText}</Alert> : null}
+                {success ? (
+                  <Alert severity="success">{helperText}</Alert>
+                ) : null}
+                {warning ? (
+                  <Alert severity="warning">{helperText}</Alert>
+                ) : null}
+                <br />
+                <br />
+                <Typography className="text-center" variant="h4">
+                  Student Transfer
+                </Typography>
+                <Typography
+                  className="text-center"
+                  variant="h5"
+                  sx={{ marginY: 5 }}
+                >
+                  This is a form to apply for transfer into the institution
+                </Typography>
+              </CardContent>
+              <Box
+                sx={{ margin: "5%" }}
+                component="form"
+                onSubmit={handleSubmit}
               >
-                This is a form to apply for transfer into the institution
-              </Typography>
-            </CardContent>
-            <Box sx={{ margin: "5%" }} component="form" onSubmit={handleSubmit}>
-              <FormControl fullWidth variant="outlined">
-                <TextField
-                  id="student-register-aadhar"
-                  label="Aadhar Number"
-                  variant="outlined"
-                  required
-                  aria-describedby="student-register-email-helper"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <CreditCardIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  placeholder="Enter your aadhar number"
-                  error={aadharNumberError}
-                  value={aadharNumber}
-                  helperText={aadharNumberError ? aadharNumberHelperText : ""}
-                  onChange={handleAadharNumber}
-                />
-                <FormHelperText id="student-register-aadhar-helper">
-                  We'll never share your Aadhar Details.
-                </FormHelperText>
-              </FormControl>
-              <br />
-              <br />
-              <FormControl fullWidth variant="outlined">
-                <TextField
-                  id="student-register-present-univeristy"
-                  label="Present Institution"
-                  variant="outlined"
-                  aria-describedby="student-register-present-univeristy-helper"
-                  disabled
-                  placeholder="Enter your present institution name"
-                  error={presentUniversityError}
-                  value={presentUniversity}
-                  onChange={handleAadharNumber}
-                />
-              </FormControl>
-              <br />
-              <br />
-              <FormControl fullWidth variant="outlined">
-                <InputLabel id="student-register-university-label">
-                  University
-                </InputLabel>
-                <Select
-                  labelId="student-register-university-label"
-                  id="student-register-university"
-                  label="Age"
-                  value={university}
-                  onChange={(e) => setUniversity(e.target.value)}
-                  required
-                >
-                  {universityList.map((university, index) => {
-                    return (
-                      <MenuItem key={index} value={university.uid}>
-                        {university.uid} - {university.universityName}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-                <FormHelperText id="student-register-phone-helper">
-                  Please select a university
-                </FormHelperText>
-              </FormControl>
-              <br />
-              <br />
-              <Box textAlign="center">
-                <LoadingButton
-                  loading={submitLoading}
-                  loadingPosition="end"
-                  endIcon={<AppRegistrationIcon />}
-                  variant="outlined"
-                  type="submit"
-                  disabled={aadharNumberError || error}
-                >
-                  Request Transfer
-                </LoadingButton>
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    id="student-register-aadhar"
+                    label="Aadhar Number"
+                    variant="outlined"
+                    required
+                    aria-describedby="student-register-email-helper"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <CreditCardIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    placeholder="Enter your aadhar number"
+                    error={aadharNumberError}
+                    value={aadharNumber}
+                    helperText={aadharNumberError ? aadharNumberHelperText : ""}
+                    onChange={handleAadharNumber}
+                  />
+                  <FormHelperText id="student-register-aadhar-helper">
+                    We'll never share your Aadhar Details.
+                  </FormHelperText>
+                </FormControl>
+                <br />
+                <br />
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    id="student-register-present-univeristy"
+                    label="Present Institution"
+                    variant="outlined"
+                    aria-describedby="student-register-present-univeristy-helper"
+                    disabled
+                    placeholder="Enter your present institution name"
+                    error={presentUniversityError}
+                    value={presentUniversity}
+                    onChange={handleAadharNumber}
+                  />
+                </FormControl>
+                <br />
+                <br />
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel id="student-register-university-label">
+                    University
+                  </InputLabel>
+                  <Select
+                    labelId="student-register-university-label"
+                    id="student-register-university"
+                    label="Age"
+                    value={university}
+                    onChange={(e) => setUniversity(e.target.value)}
+                    required
+                  >
+                    {universityList.map((university, index) => {
+                      return (
+                        <MenuItem key={index} value={university.uid}>
+                          {university.uid} - {university.universityName}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                  <FormHelperText id="student-register-phone-helper">
+                    Please select a university
+                  </FormHelperText>
+                </FormControl>
+                <br />
+                <br />
+                <Box textAlign="center">
+                  <LoadingButton
+                    loading={submitLoading}
+                    loadingPosition="end"
+                    endIcon={<AppRegistrationIcon />}
+                    variant="outlined"
+                    type="submit"
+                    disabled={aadharNumberError || error}
+                  >
+                    Request Transfer
+                  </LoadingButton>
+                </Box>
               </Box>
-            </Box>
-          </React.Fragment>
-        </Card>
-      </Box>
-    </div>
+            </React.Fragment>
+          </Card>
+        </Box>
+      </div>
+    </>
   );
 }
 

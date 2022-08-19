@@ -1,14 +1,15 @@
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 
-function StudentPrivateRoute({ currentUser }) {
+function TeacherPrivateRoute({ currentUser }) {
   const role = localStorage.getItem("role");
   const { contextLoading } = useAuth();
-  return currentUser && role === "student" && !contextLoading ? (
+  return !contextLoading && role === "teacher" ? (
     <Outlet />
   ) : (
-    <Navigate to="/student/login" />
+    <Navigate to="/teacher/login" />
   );
 }
 
-export default StudentPrivateRoute;
+export default TeacherPrivateRoute;

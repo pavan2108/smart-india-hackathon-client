@@ -17,6 +17,7 @@ import { LoadingButton } from "@mui/lab";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import axios from "axios";
 import FormScript from "../../Components/FormScript";
+import TeacherNavbar from "../../Components/TeacherNavbar";
 
 export default function CreateFormScript() {
   const [classes, setClasses] = React.useState([]);
@@ -97,103 +98,114 @@ export default function CreateFormScript() {
     setSubmitLoading(false);
   };
   return (
-    <div className="m-5">
-      <Box
-        sx={{ minWidth: 275, flexGrow: 1 }}
-        display="flex"
-        flex-direction="column"
-        justifyContent="center"
-        minHeight="100%"
-      >
-        <Card variant="outlined" sx={{ minHeight: "60vh", flexGrow: 1 }}>
-          <React.Fragment>
-            <CardContent>
-              {error ? <Alert severity="error">{helperText}</Alert> : null}
-              {success ? <Alert severity="success">{helperText}</Alert> : null}
-              {warning ? <Alert severity="warning">{helperText}</Alert> : null}
-              <br />
-              <br />
-              <Typography className="text-center" variant="h4">
-                Form Script Creation
-              </Typography>
-              <Typography
-                className="text-center"
-                variant="h5"
-                sx={{ marginY: 5 }}
-              >
-                This is a form to create form script
-              </Typography>
-            </CardContent>
-            <Box sx={{ margin: "6%" }} component="form" onSubmit={handleSubmit}>
-              <FormControl fullWidth variant="outlined">
-                <TextField
-                  id="teacher-create-form-script-code"
-                  label="Form Code"
-                  variant="outlined"
-                  aria-describedby="teacher-create-form-script-code-helper"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AbcIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  placeholder="Create a Form Code"
-                  error={formCodeError}
-                  value={formCode}
-                  helperText={formCodeError ? formCodeHelperText : ""}
-                  onChange={(e) => setFormCode(e.target.value)}
-                />
-                <FormHelperText id="teacher-create-form-script-code-helper">
-                  Create a Form Code and share with students if nothing entered
-                  it's value will be zero
-                </FormHelperText>
-              </FormControl>
-              <br />
-              <br />
-              <FormLabel component="legend">Select Classes : </FormLabel>
-              <br />
-              <Multiselect
-                options={classes}
-                selectedValues={selectedValues}
-                onSelect={handleSelect}
-                onRemove={handleRemove}
-                displayValue="name"
-              />
-              <br />
-
-              <Box textAlign="center">
-                <LoadingButton
-                  loading={submitLoading}
-                  loadingPosition="end"
-                  endIcon={<AppRegistrationIcon />}
-                  variant="outlined"
-                  type="submit"
+    <>
+      <TeacherNavbar />
+      <div className="m-5">
+        <Box
+          sx={{ minWidth: 275, flexGrow: 1 }}
+          display="flex"
+          flex-direction="column"
+          justifyContent="center"
+          minHeight="100%"
+        >
+          <Card variant="outlined" sx={{ minHeight: "60vh", flexGrow: 1 }}>
+            <React.Fragment>
+              <CardContent>
+                {error ? <Alert severity="error">{helperText}</Alert> : null}
+                {success ? (
+                  <Alert severity="success">{helperText}</Alert>
+                ) : null}
+                {warning ? (
+                  <Alert severity="warning">{helperText}</Alert>
+                ) : null}
+                <br />
+                <br />
+                <Typography className="text-center" variant="h4">
+                  Form Script Creation
+                </Typography>
+                <Typography
+                  className="text-center"
+                  variant="h5"
+                  sx={{ marginY: 5 }}
                 >
-                  Request Script
-                </LoadingButton>
+                  This is a form to create form script
+                </Typography>
+              </CardContent>
+              <Box
+                sx={{ margin: "6%" }}
+                component="form"
+                onSubmit={handleSubmit}
+              >
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    id="teacher-create-form-script-code"
+                    label="Form Code"
+                    variant="outlined"
+                    aria-describedby="teacher-create-form-script-code-helper"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AbcIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    placeholder="Create a Form Code"
+                    error={formCodeError}
+                    value={formCode}
+                    helperText={formCodeError ? formCodeHelperText : ""}
+                    onChange={(e) => setFormCode(e.target.value)}
+                  />
+                  <FormHelperText id="teacher-create-form-script-code-helper">
+                    Create a Form Code and share with students if nothing
+                    entered it's value will be zero
+                  </FormHelperText>
+                </FormControl>
+                <br />
+                <br />
+                <FormLabel component="legend">Select Classes : </FormLabel>
+                <br />
+                <Multiselect
+                  options={classes}
+                  selectedValues={selectedValues}
+                  onSelect={handleSelect}
+                  onRemove={handleRemove}
+                  displayValue="name"
+                />
+                <br />
+
+                <Box textAlign="center">
+                  <LoadingButton
+                    loading={submitLoading}
+                    loadingPosition="end"
+                    endIcon={<AppRegistrationIcon />}
+                    variant="outlined"
+                    type="submit"
+                  >
+                    Request Script
+                  </LoadingButton>
+                </Box>
               </Box>
-            </Box>
-          </React.Fragment>
-        </Card>
-      </Box>
-      <br />
-      <br />
-      {formSubmittedSuccessfully ? (
-        <Card sx={{ minHeight: "30vh", flexGrow: 1 }}>
-          <React.Fragment>
-            <Box
-              sx={{ flexGrow: 1, marginX: "5%", maxWidth: "80%" }}
-              display="flex"
-              flex-direction="column"
-              justifyContent="center"
-              minHeight="100%"
-            >
-              <FormScript text={studentTokens} />
-            </Box>
-          </React.Fragment>
-        </Card>
-      ) : null}
-    </div>
+            </React.Fragment>
+          </Card>
+        </Box>
+        <br />
+        <br />
+        {formSubmittedSuccessfully ? (
+          <Card sx={{ minHeight: "30vh", flexGrow: 1 }}>
+            <React.Fragment>
+              <Box
+                sx={{ flexGrow: 1, marginX: "5%", maxWidth: "80%" }}
+                display="flex"
+                flex-direction="column"
+                justifyContent="center"
+                minHeight="100%"
+              >
+                <FormScript text={studentTokens} />
+              </Box>
+            </React.Fragment>
+          </Card>
+        ) : null}
+      </div>
+    </>
   );
 }

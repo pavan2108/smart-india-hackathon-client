@@ -17,6 +17,7 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useAuth } from "../../Contexts/AuthContext";
 import auth from "../../firebase";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function StudentLogin() {
   const [helperText, setHelperText] = React.useState("");
@@ -34,18 +35,18 @@ function StudentLogin() {
 
   const [AadharNumberLoading, setAadharNumberLoading] = React.useState(false);
 
-  const { currentUser, setRoleToAuth, contextLoading, setAadharNumberToAuth } =
-    useAuth();
+  const { currentUser, contextLoading } = useAuth();
 
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (currentUser && !contextLoading) {
+    const role = localStorage.getItem("role");
+    if (currentUser && !contextLoading && role === "student") {
       navigate("/student/dashboard");
     }
   }, [currentUser, contextLoading, navigate]);
 
-  const handleAadharNumber = (e) => {
+  const handleAadharNumber = async (e) => {
     setAadharNumber(e.target.value);
     if (e.target.value.length < 1) {
       setAadharNumberError(false);
@@ -56,7 +57,26 @@ function StudentLogin() {
     ) {
       setAadharNumberError(false);
       setAadharNumberHelperText("");
-      return requestOtpSubmit();
+      const response = await axios.post(
+        "https://smart-india-hackathon-server.vercel.app/api/aadharnumber",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "access-control-allow-origin": "*",
+          },
+          aadharNumber: e.target.value,
+        }
+      );
+      console.log(response.data.phoneNumber);
+      if (response.data.code === "success") {
+        setAadharNumberError(false);
+        setAadharNumberHelperText("");
+
+        return requestOtpSubmit(response.data.phoneNumber);
+      } else {
+        setAadharNumberError(true);
+        setAadharNumberHelperText("Aadhar Number not found");
+      }
     } else {
       setAadharNumberError(true);
       setAadharNumberHelperText("Please enter a valid aadhar number");
@@ -87,10 +107,14 @@ function StudentLogin() {
     );
   };
 
-  const requestOtpSubmit = () => {
+  const requestOtpSubmit = async (phoneNumber) => {
     setAadharNumberLoading(true);
     generateRecaptchaVerifier();
-    signInWithPhoneNumber(auth, "+918500220568", window.recaptchaVerifier)
+    signInWithPhoneNumber(
+      auth,
+      phoneNumber.toString(),
+      window.recaptchaVerifier
+    )
       .then((confirmationResult) => {
         window.confirmationResult = confirmationResult;
       })
@@ -108,8 +132,8 @@ function StudentLogin() {
     window.confirmationResult
       .confirm(otp)
       .then((user) => {
-        setRoleToAuth("student");
-        setAadharNumberToAuth(aadharNumber);
+        localStorage.setItem("aadharNumber", aadharNumber);
+        localStorage.setItem("role", "student");
         navigate("/student/dashboard");
         setSuccess(true);
       })

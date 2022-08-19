@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 import auth from "../firebase";
 
@@ -11,44 +11,23 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
-  const [role, setRole] = useState();
-  const [email, setEmail] = useState();
-  const [aadharNumber, setAadharNumber] = useState();
   const [contextLoading, setContextLoading] = useState(false);
 
-  const setRoleToAuth = (role) => {
-    setRole(role);
-  };
-
-  const setEmailToAuth = (email) => {
-    setEmail(email);
-  };
-
-  const setAadharNumberToAuth = (aadharNumber) => {
-    setAadharNumber(aadharNumber);
-  };
-
   const signUp = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   const logout = () => {
-    setRoleToAuth(null);
-    setEmailToAuth(null);
-    setAadharNumberToAuth(null);
+    localStorage.removeItem("aadharNumber");
+    localStorage.removeItem("role");
+    localStorage.removeItem("email");
     auth.signOut();
   };
 
   const value = {
     currentUser,
-    role,
-    email,
-    aadharNumber,
     contextLoading,
-    setRoleToAuth,
     signUp,
-    setEmailToAuth,
-    setAadharNumberToAuth,
     logout,
   };
 
