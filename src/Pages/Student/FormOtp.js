@@ -24,7 +24,9 @@ function FormOtp() {
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
 
-  const [aadharNumber, setAadharNumber] = React.useState("");
+  const [aadharNumber, setAadharNumber] = React.useState(
+    localStorage.getItem("aadharNumber")
+  );
   const [aadharNumberError, setAadharNumberError] = React.useState(false);
   const [aadharNumberHelperText, setAadharNumberHelperText] =
     React.useState("");
@@ -155,6 +157,7 @@ function FormOtp() {
                     value={aadharNumber}
                     helperText={aadharNumberError ? aadharNumberHelperText : ""}
                     onChange={handleAadharNumber}
+                    disabled={true}
                   />
                   <FormHelperText id="student-token-request-aadhar-helper">
                     We'll never share your Aadhar Details.

@@ -41,7 +41,9 @@ function StudentTransfer() {
       });
   }, []);
 
-  const [aadharNumber, setAadharNumber] = React.useState("");
+  const [aadharNumber, setAadharNumber] = React.useState(
+    localStorage.getItem("aadharNumber")
+  );
   const [aadharNumberError, setAadharNumberError] = React.useState(false);
   const [aadharNumberHelperText, setAadharNumberHelperText] =
     React.useState("");
@@ -185,6 +187,7 @@ function StudentTransfer() {
                     value={aadharNumber}
                     helperText={aadharNumberError ? aadharNumberHelperText : ""}
                     onChange={handleAadharNumber}
+                    disabled={true}
                   />
                   <FormHelperText id="student-register-aadhar-helper">
                     We'll never share your Aadhar Details.

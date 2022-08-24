@@ -30,7 +30,9 @@ function StudentRegistration() {
   const [emailError, setEmailError] = React.useState(false);
   const [emailHelperText, setEmailHelperText] = React.useState("");
 
-  const [aadharNumber, setAadharNumber] = React.useState("");
+  const [aadharNumber, setAadharNumber] = React.useState(
+    localStorage.getItem("aadharNumber")
+  );
   const [aadharNumberError, setAadharNumberError] = React.useState(false);
   const [aadharNumberHelperText, setAadharNumberHelperText] =
     React.useState("");
@@ -355,6 +357,7 @@ function StudentRegistration() {
                     value={aadharNumber}
                     helperText={aadharNumberError ? aadharNumberHelperText : ""}
                     onChange={handleAadharNumber}
+                    disabled={true}
                   />
                   <FormHelperText id="student-register-aadhar-helper">
                     We'll never share your Aadhar Details.
